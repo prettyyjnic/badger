@@ -143,7 +143,13 @@ func SameKey(src, dst []byte) bool {
 	if len(src) != len(dst) {
 		return false
 	}
-	return bytes.Equal(ParseKey(src), ParseKey(dst))
+	AssertTruef(len(src) > 8, "key=%q", src)
+	for i := 0; i < len(src)-8; i++ {
+		if src[i] != dst[i] {
+			return false
+		}
+	}
+	return true;
 }
 
 // Slice holds a reusable buf, will reallocate if you request a larger size than ever before.
